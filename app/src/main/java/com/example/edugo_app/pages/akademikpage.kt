@@ -124,15 +124,13 @@ fun KelasContent(
 }
 
 @Composable
-fun MateriContent(
-    subjectCards: List<lessoncard>
-) {
-    Column (
+fun MateriContent(subjectCards: List<lessoncard>) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding()
+            .padding(16.dp)
     ) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
@@ -145,19 +143,12 @@ fun MateriContent(
                     color = Color.Black
                 )
             )
-            TextButton(
-                onClick = { }
-            ) {
-                Text(
-                    text = "Semuanya >",
-                    color = Color.Black,
-                    fontSize = 14.sp
-                )
+            TextButton(onClick = { /* TODO: Add detail action */ }) {
+                Text(text = "Semuanya >", color = Color.Black, fontSize = 14.sp)
             }
         }
-            MateriCardsRow(subjectCards = subjectCards)
-        }
-
+       MateriCardsRow(subjectCards = subjectCards)
+    }
 }
 
 @Composable
@@ -171,13 +162,15 @@ fun MateriCardsRow(subjectCards: List<lessoncard>) {
     }
 }
 
+
 @Composable
 fun MateriCardItem(card: lessoncard) {
-    Card (
+    Card(
         modifier = Modifier
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
+            .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp)),
+        shape = RoundedCornerShape(8.dp)
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .width(200.dp)
                 .background(Color.White, shape = RoundedCornerShape(8.dp))
@@ -185,11 +178,11 @@ fun MateriCardItem(card: lessoncard) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.imagedesaingrafis),
-                contentDescription = "Gambar matematika",
+                contentDescription = "Gambar Matematika",
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxWidth()
                     .height(100.dp)
-                    .clip( RoundedCornerShape(8.dp) ),
+                    .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -206,42 +199,17 @@ fun MateriCardItem(card: lessoncard) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = card.classCode,
-                    style = TextStyle(
-                        fontSize = 12.sp
-                    )
-                )
-                Text(
-                    text = card.jumlahsiswa,
-                    style = TextStyle(
-                        fontSize = 12.sp
-                    )
-                )
-                Text(
-                    text = card.jumlahtugas,
-                    style = TextStyle(
-                        fontSize = 12.sp
-                    )
-                )
+                Text(text = card.classCode, style = TextStyle(fontSize = 12.sp))
+                Text(text = card.jumlahsiswa, style = TextStyle(fontSize = 12.sp))
+                Text(text = card.jumlahtugas, style = TextStyle(fontSize = 12.sp))
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = card.persentase,
-                style = TextStyle(
-                    fontSize = 12.sp
-                )
-            )
-            Text(
-                text = card.score,
-                style = TextStyle(
-                    fontSize = 12.sp
-                )
-            )
-
+            Text(text = card.persentase, style = TextStyle(fontSize = 12.sp))
+            Text(text = card.score, style = TextStyle(fontSize = 12.sp))
         }
     }
 }
+
 
 @Composable
 fun KelasVirtualContent() {
@@ -273,6 +241,29 @@ fun KelasVirtualContent() {
                 )
             }
 
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        LazyRow (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 1.dp)
+        ){
+            val categories = listOf("Semua", "Sekarang", "Besok", "Mendatang")
+            items(categories) { category ->
+                Box(
+                    modifier = Modifier
+                        .background(Color(0xFF006769), shape = RoundedCornerShape(8.dp))
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
+                        .clickable {  }
+                ) {
+                    Text(
+                        text = category,
+                        color = Color(0xFF5B8C51),
+                        fontSize = 12.sp
+                    )
+                }
+
+            }
         }
 
     }

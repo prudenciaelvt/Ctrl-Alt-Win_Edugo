@@ -71,6 +71,7 @@ fun BerandaScreen(navController: NavHostController) {
     }
 }
 
+
 @Composable
 fun BerandaBar(
     navController: NavController,
@@ -290,7 +291,7 @@ fun BerandaCardUser(cardUser: CardUser){
 
 @Composable
 fun ProgressBelajarBox() {
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
@@ -299,59 +300,48 @@ fun ProgressBelajarBox() {
             defaultElevation = 8.dp
         )
     ) {
-        Column (
+        Column(
             modifier = Modifier.padding(16.dp)
-        ){
-            Row (
+        ) {
+            Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
-            ){
-               Text (
-                   "Progress Belajar",
-                   style = TextStyle(
-                       fontSize = 18.sp,
-                       fontWeight = FontWeight.Bold
-                   )
-               )
-                Column (
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    TempoItem(color = Color(0xFF8FD3C1), label = "Minggu ini")
-                    TempoItem(color = Color(0xFF567D6C), label = "Minggu Kemarin")
+            ) {
+                Text(
+                    text = "Progres Belajar",
+                    style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                )
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    LegendItem(color = Color(0xFF8FD3C1), label = "Minggu ini")
+                    LegendItem(color = Color(0xFF567D6C), label = "Minggu Kemarin")
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            ProgressBarRow (
-                label = "Penyelesaian Kelas", progressThisWeek = 0.7f, progressLastWeek = 0.5f
-            )
+            // Progress bars
+            ProgressBarRow(label = "penyelesaian kelas", progressThisWeek = 0.7f, progressLastWeek = 0.5f)
             Spacer(modifier = Modifier.height(8.dp))
-            ProgressBarRow (
-                label = "Penyelesaian Tugas", progressThisWeek = 0.9f, progressLastWeek = 0.4f
-            )
+            ProgressBarRow(label = "penyelesaian Tugas", progressThisWeek = 0.9f, progressLastWeek = 0.4f)
+
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "1 November - 28 November 2024",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
+                style = TextStyle(fontSize = 12.sp, color = Color.Gray)
             )
         }
     }
 }
 
 @Composable
-fun TempoItem(color: Color, label: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+fun LegendItem(color: Color, label: String) {
+    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
         Canvas(
             modifier = Modifier.size(12.dp)
         ) {
-            drawCircle (color = color)
+            drawCircle(color = color)
         }
         Spacer(modifier = Modifier.width(4.dp))
+        Text(text = label, style = TextStyle(fontSize = 12.sp))
     }
 }
 
@@ -360,40 +350,42 @@ fun ProgressBarRow(label: String, progressThisWeek: Float, progressLastWeek: Flo
     Column {
         Text(
             text = label,
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal
-            ),
-            modifier = Modifier
-                .padding(bottom = 4.dp)
+            style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Normal),
+            modifier = Modifier.padding(bottom = 4.dp)
         )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(20.dp)
+                .padding(vertical = 4.dp)
         ) {
             Canvas(
                 modifier = Modifier.matchParentSize()
             ) {
+                // Background bar
                 drawRoundRect(
                     color = Color.LightGray.copy(alpha = 0.5f),
                     size = Size(size.width, 20.dp.toPx()),
-                    cornerRadius = CornerRadius(10.dp.toPx())
+                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx())
                 )
+                // Last week's progress
                 drawRoundRect(
                     color = Color(0xFF567D6C),
                     size = Size(size.width * progressLastWeek, 20.dp.toPx()),
-                    cornerRadius = CornerRadius(10.dp.toPx())
+                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx())
                 )
+                // This week's progress
                 drawRoundRect(
                     color = Color(0xFF8FD3C1),
                     size = Size(size.width * progressThisWeek, 20.dp.toPx()),
-                    cornerRadius = CornerRadius(10.dp.toPx()),
+                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx()),
                     style = Stroke(width = 3.dp.toPx())
                 )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -1,6 +1,7 @@
 package com.example.edugo_app
 
-import android.widget.Space
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,9 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import com.example.edugo_app.navigation.NavigationItem
 import com.example.edugo_app.navigation.Screen
@@ -50,17 +50,20 @@ import com.example.edugo_app.pages.BerandaScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
 import com.example.edugo_app.data.desainGrafisCard
 import com.example.edugo_app.data.matematikaCard
 import com.example.edugo_app.pages.AkademikScreen
-import com.example.edugo_app.pages.ForumScreen
+import com.example.edugo_app.pages.ForumContent
 import com.example.edugo_app.pages.ProfileScreen
 import com.example.edugo_app.pages.SemuaKelasScreen
+import com.example.edugo_app.pages.SoalPage
 import com.example.edugo_app.pages.SplashScreen
 import com.example.edugo_app.pages.TugasScreen
+import com.example.edugo_app.pages.UjianPage
+import com.example.edugo_app.pages.mathscreen
 import com.example.edugo_app.utils.shouldShowBottomBar
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EdugoApp(
     modifier: Modifier = Modifier,
@@ -74,6 +77,20 @@ fun EdugoApp(
             BerandaTopBar(navController = navController, currentRoute = currentRoute)
             AkademikTopBar(currentRoute = currentRoute)
             SemuaKelasTopBar(currentRoute = currentRoute)
+            AnimatedVisibility(
+                visible = currentRoute.shouldShowBottomBar()
+            ) {
+                AppTopBar(
+                    title = when (currentRoute) {
+                        Screen.Beranda.route -> "Beranda"
+                        Screen.Akademik.route -> "Akademik"
+                        Screen.Tugas.route -> "Tugas"
+                        Screen.Forum.route -> "Forum"
+                        Screen.Profile.route -> "Profile"
+                        else -> ""
+                    }
+                )
+            }
         },
         bottomBar = {
             AnimatedVisibility(
@@ -91,6 +108,10 @@ fun EdugoApp(
             composable(Screen.Splash.route) {
                 SplashScreen(navController)
             }
+            composable(Screen.Math.route) {
+                val subjectCards = listOf(desainGrafisCard, matematikaCard)
+                mathscreen(subjectCards, NavController)
+            }
            composable(Screen.Beranda.route) {
                BerandaScreen(navController )
            }
@@ -101,15 +122,23 @@ fun EdugoApp(
             composable(Screen.SemuaKelas.route) {
                 SemuaKelasScreen(navController)
             }
+
             composable(Screen.Tugas.route) {
-                TugasScreen()
+                TugasScreen(navController)
             }
             composable(Screen.Forum.route) {
-                ForumScreen()
+                ForumContent()
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
             }
+            composable("ujian") {
+                UjianPage(navController)
+            }
+            composable("soal") {
+                SoalPage(navController)
+            }
+
         }
 
 
@@ -214,6 +243,43 @@ fun AkademikTopBar(currentRoute: String?) {
               .height(85.dp)
       )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppTopBar(
+    title: String,
+    showBackButton: Boolean = false,
+    onBackClick: (() -> Unit)? = null
+) {
+    TopAppBar(
+        title = {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = title,
+                    color = Color.White,
+                    style = TextStyle(fontSize = 20.sp)
+                )
+            }
+        },
+        navigationIcon = {
+            if (showBackButton) {
+                IconButton(onClick = { onBackClick?.invoke() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = "Back",
+                        tint = Color.White
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color(0xFF006769)
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -334,8 +400,3 @@ private fun BottomNavBar(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun EdugoAppPreview() {
-    EdugoApp()
-}
