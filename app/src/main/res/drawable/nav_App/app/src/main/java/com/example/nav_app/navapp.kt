@@ -1,12 +1,11 @@
-package com.example.edugo_app
+package com.example.nav_app
 
-import android.widget.Space
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,13 +25,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,40 +39,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.composable
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
-import com.example.edugo_app.navigation.NavigationItem
-import com.example.edugo_app.navigation.Screen
-import com.example.edugo_app.pages.BerandaScreen
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
-import com.example.edugo_app.data.desainGrafisCard
-import com.example.edugo_app.data.matematikaCard
-import com.example.edugo_app.pages.AkademikScreen
-import com.example.edugo_app.pages.ForumScreen
-import com.example.edugo_app.pages.ProfileScreen
-import com.example.edugo_app.pages.SemuaKelasScreen
-import com.example.edugo_app.pages.SplashScreen
-import com.example.edugo_app.pages.TugasScreen
-import com.example.edugo_app.utils.shouldShowBottomBar
+import com.example.nav_app.navigation.NavigationItem
+import com.example.nav_app.navigation.Screen
+import com.example.nav_app.pages.BerandaScreen
+import com.example.nav_app.utils.shouldShowBottomBar
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
+import com.example.nav_app.data.graphicDesignCard
+import com.example.nav_app.data.matematikaCard
+import com.example.nav_app.pages.AkademikScreen
+import com.example.nav_app.pages.ForumScreen
+import com.example.nav_app.pages.ProfileScreen
+import com.example.nav_app.pages.TugasScreen
 
 @Composable
-fun EdugoApp(
+fun navApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    Scaffold (
+    Scaffold(
         topBar = {
             BerandaTopBar(navController = navController, currentRoute = currentRoute)
             AkademikTopBar(currentRoute = currentRoute)
-            SemuaKelasTopBar(currentRoute = currentRoute)
         },
         bottomBar = {
             AnimatedVisibility(
@@ -82,25 +78,20 @@ fun EdugoApp(
                 BottomNavBar(navController)
             }
         }
-    ){contentPadding ->
-        NavHost (
+    ) { contentPadding ->
+        NavHost(
             navController = navController,
-            startDestination = Screen.Splash.route,
+            startDestination = Screen.Beranda.route,
             modifier = modifier.padding(contentPadding)
         ) {
-            composable(Screen.Splash.route) {
-                SplashScreen(navController)
+            composable(Screen.Beranda.route) {
+                BerandaScreen(navController)
             }
-           composable(Screen.Beranda.route) {
-               BerandaScreen(navController )
-           }
             composable(Screen.Akademik.route) {
-                val subjectCards = listOf(desainGrafisCard, matematikaCard)
+                val subjectCards = listOf(graphicDesignCard, matematikaCard)
                 AkademikScreen(subjectCards = subjectCards)
             }
-            composable(Screen.SemuaKelas.route) {
-                SemuaKelasScreen(navController)
-            }
+
             composable(Screen.Tugas.route) {
                 TugasScreen()
             }
@@ -110,45 +101,43 @@ fun EdugoApp(
             composable(Screen.Profile.route) {
                 ProfileScreen()
             }
+
         }
-
-
     }
-
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
+fun BerandaTopBar(navController: NavController, currentRoute: String?) {
     if (currentRoute == Screen.Beranda.route) {
         TopAppBar(
             title = {},
             navigationIcon = {
-                Row (
+                Row(
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(start = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.imageprofile),
                         contentDescription = "image profile",
                         modifier = Modifier.size(49.dp)
                     )
                     Spacer(modifier = Modifier.width(16.dp))
-                    Column (
+                    Column(
                         verticalArrangement = Arrangement.Center
-                    ){
+                    ) {
                         Text(
-                            text = "Halo",
+                            text = "Halo 👋",
                             style = TextStyle(
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
                         )
-                        Text (
+                        Text(
                             text = "Ferdian",
                             style = TextStyle(
                                 fontSize = 14.sp,
@@ -163,18 +152,17 @@ fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
                         },
                         modifier = Modifier.padding(end = 10.dp)
                     ) {
-                        Icon (
+                        Icon(
                             painter = painterResource(id = R.drawable.iconcalender),
                             contentDescription = "kalender",
                             modifier = Modifier.size(29.dp),
                             tint = Color.White
                         )
                     }
-
                 }
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Color(0xFF0066769),
+                containerColor = Color(0xFF006769),
                 navigationIconContentColor = Color.White,
                 titleContentColor = Color.White
             ),
@@ -188,38 +176,7 @@ fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AkademikTopBar(currentRoute: String?) {
-    if(currentRoute == Screen.Akademik.route) {
-      TopAppBar(
-          title = {
-              Box(
-                  modifier = Modifier.fillMaxSize(),
-                  contentAlignment = Alignment.Center
-              ) {
-                  Text(
-                      text = "Materi Dan Kelas",
-                      style = TextStyle (
-                          fontSize = 20.sp,
-                          fontWeight = FontWeight.Bold,
-                          color = Color.White
-                      )
-                  )
-              }
-          },
-          colors = TopAppBarDefaults.smallTopAppBarColors(
-              containerColor = Color(0xFF006769),
-              titleContentColor = Color.White
-          ),
-          modifier = Modifier
-              .fillMaxWidth()
-              .height(85.dp)
-      )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SemuaKelasTopBar(currentRoute: String?) {
-    if(currentRoute == Screen.SemuaKelas.route) {
+    if (currentRoute == Screen.Akademik.route) {
         TopAppBar(
             title = {
                 Box(
@@ -228,7 +185,7 @@ fun SemuaKelasTopBar(currentRoute: String?) {
                 ) {
                     Text(
                         text = "Materi Dan Kelas",
-                        style = TextStyle (
+                        style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -248,62 +205,61 @@ fun SemuaKelasTopBar(currentRoute: String?) {
 }
 
 
+
+
 @Composable
-private fun BottomNavBar(
-    navController: NavHostController
-) {
+private fun BottomNavBar(navController: NavHostController) {
     Surface(
         modifier = Modifier
             .padding(horizontal = 13.dp, vertical = 8.dp)
+            .shadow(elevation = 8.dp, shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp))
             .fillMaxWidth()
-            .shadow(elevation = 8.dp)
             .height(90.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         color = Color(0xFF95CFB9)
     ) {
-        NavigationBar (
+        NavigationBar(
             containerColor = Color.Transparent,
             modifier = Modifier.padding(horizontal = 8.dp)
-        ){
+        ) {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry.value?.destination?.route
 
-            val navigationItem = listOf(
-                NavigationItem (
+            val navigationItems = listOf(
+                NavigationItem(
                     title = "Beranda",
                     icon = R.drawable.iconberanda,
                     screen = Screen.Beranda
                 ),
-                NavigationItem (
+                NavigationItem(
                     title = "Akademik",
                     icon = R.drawable.iconakademik,
                     screen = Screen.Akademik
                 ),
-                NavigationItem (
+                NavigationItem(
                     title = "Tugas",
                     icon = R.drawable.icontugas,
                     screen = Screen.Tugas
                 ),
-                NavigationItem (
+                NavigationItem(
                     title = "Forum",
                     icon = R.drawable.iconforum,
                     screen = Screen.Forum
                 ),
-                NavigationItem (
+                NavigationItem(
                     title = "Profile",
                     icon = R.drawable.iconprofile,
                     screen = Screen.Profile
                 )
-
             )
 
-            navigationItem.forEach{item ->
+            navigationItems.forEach { item ->
                 NavigationBarItem(
                     selected = currentRoute == item.screen.route,
                     onClick = {
                         navController.navigate(item.screen.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
-                                saveState =true
+                                saveState = true
                             }
                             restoreState = true
                             launchSingleTop = true
@@ -313,7 +269,7 @@ private fun BottomNavBar(
                         Image(
                             painter = painterResource(id = item.icon),
                             contentDescription = item.title,
-                            modifier = Modifier.size(23.dp)
+                            modifier = Modifier.size(23.dp) // Consistent size for better visual balance
                         )
                     },
                     label = {
@@ -327,15 +283,14 @@ private fun BottomNavBar(
                     }
                 )
             }
-
         }
-
     }
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun EdugoAppPreview() {
-    EdugoApp()
+fun NavappPreview() {
+    navApp()
 }
+
