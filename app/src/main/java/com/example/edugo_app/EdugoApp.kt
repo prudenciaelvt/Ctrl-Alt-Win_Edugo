@@ -60,6 +60,7 @@ import com.example.edugo_app.pages.SoalPage
 import com.example.edugo_app.pages.SplashScreen
 import com.example.edugo_app.pages.TugasScreen
 import com.example.edugo_app.pages.UjianPage
+import com.example.edugo_app.pages.UjianSelesai
 import com.example.edugo_app.pages.mathscreen
 import com.example.edugo_app.utils.shouldShowBottomBar
 
@@ -138,7 +139,9 @@ fun EdugoApp(
             composable("soal") {
                 SoalPage(navController)
             }
-
+            composable("ujianselesai") {
+                UjianSelesai(navController)
+            }
         }
 
 
