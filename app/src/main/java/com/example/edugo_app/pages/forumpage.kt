@@ -2,6 +2,7 @@ package com.example.edugo_app.pages
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -92,7 +94,7 @@ fun ForumContent(modifier: Modifier = Modifier) {
                     message = "guys gimana ya utk pengumpulan tgs desain?",
                     replyCount = 9,
                     profileImageRes = R.drawable.imageprofile,
-                    contentImageRes = R.drawable.imagedesaingrafis,
+                    contentImageRes = R.drawable.forum_desain,
                 )
             }
             item {
@@ -145,15 +147,16 @@ fun ForumItem(
         Text(message, style = TextStyle(fontSize = 16.sp, color = Color.Gray))
         if (contentImageRes != null) {
             Spacer(modifier = Modifier.height(8.dp))
-            Icon(
+            Image(
                 painter = painterResource(contentImageRes),
                 contentDescription = "Content Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                tint = Color.Unspecified
+                contentScale = ContentScale.Crop
             )
+
         }
         Spacer(modifier = Modifier.height(24.dp))
         Divider(color = Color.Gray, thickness = 1.dp)
