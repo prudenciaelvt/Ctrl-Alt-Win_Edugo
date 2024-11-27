@@ -3,6 +3,7 @@ package com.example.edugo_app.pages
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,8 @@ fun TugasScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(8.dp))
             Text("Kategori", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Bagian Kategori
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(listOf("1 DKV", "2 ATU", "3 ATPH", "Desain Graphic", "Agama", "Matematika")) { category ->
                     val backgroundColor = if (category == "1 DKV") {
@@ -45,24 +48,26 @@ fun TugasScreen(navController: NavHostController) {
                     } else {
                         Color(0xFF80B3B4)
                     }
-
                     CategoryChip(category, backgroundColor = backgroundColor)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Bagian Task Sections
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                item { TaskSection("Tugas Anda", navController) }
-                item { TaskSection("Ujian", navController) }
-                item { TaskSection("Quiz", navController) }
+                // Menambahkan tipe ke setiap section
+                item { TaskSection("Tugas Anda", "Tugas Anda", navController) }
+                item { TaskSection("Ujian", "ujian", navController) }
+                item { TaskSection("Quiz", "quiz", navController) }
             }
         }
     }
 }
+
 
 @Composable
 fun CategoryChip(category: String, backgroundColor: Color) {
@@ -80,17 +85,26 @@ fun CategoryChip(category: String, backgroundColor: Color) {
 }
 
 @Composable
-fun TaskSection(title: String, navController: NavHostController) {
+fun TaskSection(title: String, type: String, navController: NavHostController) {
     Column {
+        // Judul Section
         Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Daftar Tugas/Ujian/Quiz
         LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             items(3) { index ->
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
-                        .clickable { navController.navigate("ujian") }
+                        .clickable {
+                            when (type) {
+                                "Tugas Anda" -> navController.navigate("tugasanda")
+                                "ujian" -> navController.navigate("ujian")
+                                "quiz" -> navController.navigate("quiz")
+                                else -> {}
+                            }
+                        }
                 ) {
                     TaskCard()
                 }
@@ -112,7 +126,6 @@ fun TaskCard() {
             .background(Color.White, shape = RoundedCornerShape(8.dp))
             .padding(4.dp)
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.imagedesaingrafis),
             contentDescription = "Gambar Matematika",
@@ -130,5 +143,38 @@ fun TaskCard() {
         Text("Jam: 17:00 WIB", fontSize = 12.sp, color = Color.Gray)
         Spacer(modifier = Modifier.height(1.dp))
         Text("Status: Belum Dikumpulkan", fontSize = 12.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).padding(bottom = 4.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color(0xFFFBF8EF), shape = RoundedCornerShape(8.dp))
+                    .shadow(
+                        elevation = 2.dp,
+                        shape = RoundedCornerShape(2.dp),
+                        clip = true,
+                    )
+                    .padding(horizontal = 9.dp, vertical = 6.dp)
+
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_bolt),
+                        contentDescription = "Petir",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("50", fontSize = 14.sp, color = Color.Black)
+                }
+            }
+        }
     }
 }

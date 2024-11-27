@@ -60,6 +60,7 @@ import com.example.edugo_app.pages.RiwayatTugasScreen
 import com.example.edugo_app.pages.SemuaKelasScreen
 import com.example.edugo_app.pages.SoalPage
 import com.example.edugo_app.pages.SplashScreen
+import com.example.edugo_app.pages.TugasAndaPage
 import com.example.edugo_app.pages.TugasScreen
 import com.example.edugo_app.pages.UjianPage
 import com.example.edugo_app.pages.UjianSelesai
@@ -148,6 +149,9 @@ fun EdugoApp(
             }
             composable("riwayattugas") {
                 RiwayatTugasScreen(navController = navController)
+            }
+            composable("tugasanda") {
+                TugasAndaPage(navController = navController)
             }
         }
     }
