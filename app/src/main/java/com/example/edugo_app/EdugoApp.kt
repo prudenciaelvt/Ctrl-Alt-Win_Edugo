@@ -56,6 +56,7 @@ import com.example.edugo_app.pages.AkademikScreen
 import com.example.edugo_app.pages.EditProfileScreen
 import com.example.edugo_app.pages.ForumContent
 import com.example.edugo_app.pages.ProfileScreen
+import com.example.edugo_app.pages.RiwayatTugasScreen
 import com.example.edugo_app.pages.SemuaKelasScreen
 import com.example.edugo_app.pages.SoalPage
 import com.example.edugo_app.pages.SplashScreen
@@ -140,10 +141,13 @@ fun EdugoApp(
                 UjianSelesai(navController)
             }
             composable(Screen.Profile.route) {
-                ProfileScreen(navController = navController) // Perhatikan parameter di sini
+                ProfileScreen(navController = navController)
             }
             composable("editprofile") {
-                EditProfileScreen(navController = navController) // Perhatikan parameter di sini
+                EditProfileScreen(navController = navController)
+            }
+            composable("riwayattugas") {
+                RiwayatTugasScreen(navController = navController)
             }
         }
     }

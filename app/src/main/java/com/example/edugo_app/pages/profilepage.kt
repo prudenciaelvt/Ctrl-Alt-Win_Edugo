@@ -57,12 +57,12 @@ fun ProfileScreen(modifier: Modifier = Modifier, navController: NavController) {
                 backgroundColor = Color.White
             ) { navController.navigate("editprofile") }
             ProfileButton(
-                text = "Riwayat Kelas",
+                text = "Riwayat Tugas",
                 iconResId = R.drawable.ic_library,
                 backgroundColor = Color.White
-            ) {  }
+            ) { navController.navigate("riwayattugas") }
             ProfileButton(
-                text = "Riwayat Aktivitas Penilaian",
+                text = "Riwayat Aktivitas Forum",
                 iconResId = R.drawable.ic_puzzle,
                 backgroundColor = Color.White
             ) {}
@@ -109,7 +109,7 @@ fun ProfileButton(
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .size(18.dp),
-                colorFilter = if (iconResId == R.drawable.iconberanda) {
+                colorFilter = if (  text == "Log Out") {
                     ColorFilter.tint(Color.White)
                 } else {
                     ColorFilter.tint(Color.Black)
@@ -129,7 +129,12 @@ fun ProfileButton(
                 painter = painterResource(id = R.drawable.ic_right),
                 contentDescription = "Right Arrow",
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.size(12.dp)
+                modifier = Modifier.size(12.dp),
+                colorFilter = if (iconResId == R.drawable.ic_logout) {
+                    ColorFilter.tint(Color.White)
+                } else {
+                    ColorFilter.tint(Color.Black)
+                }
             )
         }
     }

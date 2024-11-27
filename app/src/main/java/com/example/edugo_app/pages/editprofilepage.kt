@@ -1,11 +1,14 @@
 package com.example.edugo_app.pages
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,30 +23,68 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.edugo_app.AppTopBar
 import com.example.edugo_app.R
 
 @Composable
-fun EditProfileScreen(navController: NavController) {
-    Surface(
-        modifier = Modifier.background(Color(0xFF13382C))
+fun EditProfileScreen(navController: NavHostController) {
+    Scaffold(
+        topBar = { TopBarEditProfile(navController) }
+    ) { paddingValues ->
+        EditProfileContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFFFFFFF))
+                .padding(paddingValues),
+            navController = navController,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+}
+
+@Composable
+fun TopBarEditProfile(navController: NavHostController) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF006769))
+            .padding(vertical = 12.dp)
     ) {
-        Column {
-            AppTopBar(
-                title = "Edit Profile",
-                showBackButton = true,
-                onBackClick = { navController.popBackStack() }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = "Back Icon",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { navController.popBackStack() }
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 16.dp)
             )
-            EditProfileContent(
-                onBackClick = { navController.popBackStack() }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "Riwayat Tugas",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.CenterVertically)
             )
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
 
-
 @Composable
-fun EditProfileContent(modifier: Modifier = Modifier,  onBackClick: () -> Unit) {
+fun EditProfileContent(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    onBackClick: () -> Unit
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
