@@ -53,6 +53,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.edugo_app.data.desainGrafisCard
 import com.example.edugo_app.data.matematikaCard
 import com.example.edugo_app.pages.AkademikScreen
+import com.example.edugo_app.pages.EditProfileScreen
 import com.example.edugo_app.pages.ForumContent
 import com.example.edugo_app.pages.ProfileScreen
 import com.example.edugo_app.pages.SemuaKelasScreen
@@ -123,15 +124,11 @@ fun EdugoApp(
             composable(Screen.SemuaKelas.route) {
                 SemuaKelasScreen(navController)
             }
-
             composable(Screen.Tugas.route) {
                 TugasScreen(navController)
             }
             composable(Screen.Forum.route) {
                 ForumContent()
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen()
             }
             composable("ujian") {
                 UjianPage(navController)
@@ -142,13 +139,15 @@ fun EdugoApp(
             composable("ujianselesai") {
                 UjianSelesai(navController)
             }
+            composable(Screen.Profile.route) {
+                ProfileScreen(navController = navController) // Perhatikan parameter di sini
+            }
+            composable("editprofile") {
+                EditProfileScreen(navController = navController) // Perhatikan parameter di sini
+            }
         }
-
-
     }
-
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -264,7 +263,7 @@ fun AppTopBar(
                 Text(
                     text = title,
                     color = Color.White,
-                    style = TextStyle(fontSize = 20.sp)
+                    style = TextStyle(fontSize = 20.sp),
                 )
             }
         },
@@ -274,7 +273,8 @@ fun AppTopBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back),
                         contentDescription = "Back",
-                        tint = Color.White
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }

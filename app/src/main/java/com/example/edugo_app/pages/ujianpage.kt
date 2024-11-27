@@ -140,7 +140,7 @@ fun UjianPage(
                             .padding(horizontal = 16.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.image2),
+                            painter = painterResource(id = R.drawable.user_edugo2),
                             contentDescription = "Foto Guru",
                             modifier = Modifier.size(60.dp)
                         )
