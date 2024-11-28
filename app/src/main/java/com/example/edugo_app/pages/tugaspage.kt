@@ -40,7 +40,6 @@ fun TugasScreen(navController: NavHostController) {
             Text("Kategori", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Bagian Kategori
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(listOf("1 DKV", "2 ATU", "3 ATPH", "Desain Graphic", "Agama", "Matematika")) { category ->
                     val backgroundColor = if (category == "1 DKV") {
@@ -54,12 +53,10 @@ fun TugasScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Bagian Task Sections
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Menambahkan tipe ke setiap section
                 item { TaskSection("Tugas Anda", "Tugas Anda", navController) }
                 item { TaskSection("Ujian", "ujian", navController) }
                 item { TaskSection("Quiz", "quiz", navController) }
@@ -87,11 +84,9 @@ fun CategoryChip(category: String, backgroundColor: Color) {
 @Composable
 fun TaskSection(title: String, type: String, navController: NavHostController) {
     Column {
-        // Judul Section
         Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Daftar Tugas/Ujian/Quiz
         LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             items(3) { index ->
                 Box(

@@ -32,7 +32,6 @@ fun ProfileScreen(navController: NavHostController) {
         ProfileContent(
             modifier = Modifier
                 .fillMaxSize()
-
                 .background(Color(0xFFFFFFFF)),
             navController = navController
         )
