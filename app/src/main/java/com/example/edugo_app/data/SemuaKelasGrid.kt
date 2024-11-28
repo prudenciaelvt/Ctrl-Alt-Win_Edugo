@@ -1,7 +1,8 @@
-package com.example.edugo_app
+package com.example.edugo_app.data
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
+import com.example.edugo_app.R
 
 data class SemuaKelasGrid(
     val label: String,

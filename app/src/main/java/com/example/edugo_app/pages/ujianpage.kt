@@ -142,7 +142,7 @@ fun SoalPage(navController: NavHostController) {
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
-                            onClick = { },
+                            onClick = { navController.navigate("ujianselesai") },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF006769)),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier

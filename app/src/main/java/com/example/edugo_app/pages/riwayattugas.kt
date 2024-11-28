@@ -3,13 +3,13 @@ package com.example.edugo_app.pages
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,85 +28,59 @@ import com.example.edugo_app.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TugasScreen(navController: NavHostController) {
-    Scaffold {
+fun RiwayatTugasScreen(navController: NavHostController) {
+    Scaffold(
+        topBar = { TopBarRiwayatTugas(navController) }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFFFFFFF))
+                .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Text("Kategori", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Spacer(modifier = Modifier.height(8.dp))
-
-            // Bagian Kategori
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(listOf("1 DKV", "2 ATU", "3 ATPH", "Desain Graphic", "Agama", "Matematika")) { category ->
-                    val backgroundColor = if (category == "1 DKV") {
+                items(listOf("Ujian", "Quiz", "Tugas")) { category ->
+                    val backgroundColor = if (category == "Quiz") {
                         Color(0xFF006769)
                     } else {
                         Color(0xFF80B3B4)
                     }
+
                     CategoryChip(category, backgroundColor = backgroundColor)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Bagian Task Sections
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Menambahkan tipe ke setiap section
-                item { TaskSection("Tugas Anda", "Tugas Anda", navController) }
-                item { TaskSection("Ujian", "ujian", navController) }
-                item { TaskSection("Quiz", "quiz", navController) }
+                item { Task2Section("Diselesaikan", navController) }
+                item { Task2Section("Tidak di kerjakan", navController) }
             }
         }
     }
 }
 
-
 @Composable
-fun CategoryChip(category: String, backgroundColor: Color) {
-    Box(
-        modifier = Modifier
-            .background(backgroundColor, RoundedCornerShape(16.dp))
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = category,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-fun TaskSection(title: String, type: String, navController: NavHostController) {
+fun Task2Section(title: String, navController: NavHostController) {
     Column {
-        // Judul Section
         Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Daftar Tugas/Ujian/Quiz
         LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             items(3) { index ->
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
-                        .clickable {
-                            when (type) {
-                                "Tugas Anda" -> navController.navigate("tugasanda")
-                                "ujian" -> navController.navigate("ujian")
-                                "quiz" -> navController.navigate("quiz")
-                                else -> {}
-                            }
-                        }
+                        .clickable { navController.navigate("reviewnilai") }
                 ) {
-                    TaskCard()
+                    Task2Card()
                 }
             }
         }
@@ -114,7 +88,7 @@ fun TaskSection(title: String, type: String, navController: NavHostController) {
 }
 
 @Composable
-fun TaskCard() {
+fun Task2Card() {
     Column(
         modifier = Modifier
             .width(200.dp)
@@ -126,6 +100,7 @@ fun TaskCard() {
             .background(Color.White, shape = RoundedCornerShape(8.dp))
             .padding(4.dp)
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.imagedesaingrafis),
             contentDescription = "Gambar Matematika",
@@ -143,38 +118,41 @@ fun TaskCard() {
         Text("Jam: 17:00 WIB", fontSize = 12.sp, color = Color.Gray)
         Spacer(modifier = Modifier.height(1.dp))
         Text("Status: Belum Dikumpulkan", fontSize = 12.sp, color = Color.Gray)
+    }
+}
 
-        Spacer(modifier = Modifier.height(8.dp))
-
+@Composable
+fun TopBarRiwayatTugas(navController: NavHostController) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF006769))
+            .padding(vertical = 12.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).padding(bottom = 4.dp),
-            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = "Back Icon",
+                tint = Color.White,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFFBF8EF), shape = RoundedCornerShape(8.dp))
-                    .shadow(
-                        elevation = 2.dp,
-                        shape = RoundedCornerShape(2.dp),
-                        clip = true,
-                    )
-                    .padding(horizontal = 9.dp, vertical = 6.dp)
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.iconthunder),
-                        contentDescription = "Petir",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("50", fontSize = 14.sp, color = Color.Black)
-                }
-            }
+                    .size(32.dp)
+                    .clickable { navController.popBackStack() }
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 16.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "Riwayat Tugas",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

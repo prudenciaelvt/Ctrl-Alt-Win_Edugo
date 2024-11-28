@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,13 +54,22 @@ import androidx.navigation.compose.rememberNavController
 import com.example.edugo_app.data.desainGrafisCard
 import com.example.edugo_app.data.matematikaCard
 import com.example.edugo_app.pages.AkademikScreen
+import com.example.edugo_app.pages.EditProfileScreen
 import com.example.edugo_app.pages.ForumContent
+import com.example.edugo_app.pages.KalenderScreen
+import com.example.edugo_app.pages.KelasDesainScreen
+import com.example.edugo_app.pages.MateriScreen
+import com.example.edugo_app.pages.PapanPeringkatScreen
 import com.example.edugo_app.pages.ProfileScreen
+import com.example.edugo_app.pages.RegisterScreen
+import com.example.edugo_app.pages.RiwayatTugasScreen
 import com.example.edugo_app.pages.SemuaKelasScreen
 import com.example.edugo_app.pages.SoalPage
 import com.example.edugo_app.pages.SplashScreen
+import com.example.edugo_app.pages.TugasAndaPage
 import com.example.edugo_app.pages.TugasScreen
 import com.example.edugo_app.pages.UjianPage
+import com.example.edugo_app.pages.UjianSelesai
 import com.example.edugo_app.pages.mathscreen
 import com.example.edugo_app.utils.shouldShowBottomBar
 
@@ -72,24 +82,42 @@ fun EdugoApp(
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    Scaffold (
+    Scaffold(
         topBar = {
-            BerandaTopBar(navController = navController, currentRoute = currentRoute)
-            AkademikTopBar(currentRoute = currentRoute)
-            SemuaKelasTopBar(currentRoute = currentRoute)
-            AnimatedVisibility(
-                visible = currentRoute.shouldShowBottomBar()
-            ) {
-                AppTopBar(
-                    title = when (currentRoute) {
-                        Screen.Beranda.route -> "Beranda"
-                        Screen.Akademik.route -> "Akademik"
-                        Screen.Tugas.route -> "Tugas"
-                        Screen.Forum.route -> "Forum"
-                        Screen.Profile.route -> "Profile"
-                        else -> ""
-                    }
-                )
+            when (currentRoute) {
+                Screen.Beranda.route -> BerandaTopBar(currentRoute, navController)
+                Screen.Splash.route -> {}
+                Screen.Daftar.route -> {}
+                else -> {
+                    AppTopBar(
+                        title = when (currentRoute) {
+                            Screen.Akademik.route -> "Materi dan Kelas"
+                            Screen.Tugas.route -> "Tugas"
+                            Screen.Forum.route -> "Forum"
+                            Screen.Profile.route -> "Profile"
+                            Screen.SemuaKelas.route -> "Semua Kelas"
+                            Screen.Kalendar.route ->"Kalender Akademik"
+                            Screen.Math.route -> "Matematika"
+                            Screen.KelasDesain.route -> "Kelas"
+                            Screen.PapanPeringkat.route -> "Papan Peringkat"
+                            Screen.Materi.route -> "Materi"
+                            Screen.Ujian.route -> "Ujian"
+                            else -> ""
+                        },
+                        showBackButton = when (currentRoute) {
+                            Screen.SemuaKelas.route -> true
+                            Screen.Kalendar.route -> true
+                            Screen.Math.route ->true
+                            Screen.KelasDesain.route -> true
+                            Screen.PapanPeringkat.route -> true
+                            Screen.Materi.route -> true
+                            Screen.Ujian.route -> true
+                            Screen.Soal.route -> true
+                            else -> false
+                        },
+                        onBackClick = { navController.popBackStack() }
+                    )
+                }
             }
         },
         bottomBar = {
@@ -99,8 +127,8 @@ fun EdugoApp(
                 BottomNavBar(navController)
             }
         }
-    ){contentPadding ->
-        NavHost (
+    ) { contentPadding ->
+        NavHost(
             navController = navController,
             startDestination = Screen.Splash.route,
             modifier = modifier.padding(contentPadding)
@@ -108,21 +136,41 @@ fun EdugoApp(
             composable(Screen.Splash.route) {
                 SplashScreen(navController)
             }
+            composable(Screen.Daftar.route) {
+                RegisterScreen(navController)
+            }
+            composable("ujianselesai") {
+                UjianSelesai(navController)
+            }
             composable(Screen.Math.route) {
                 val subjectCards = listOf(desainGrafisCard, matematikaCard)
                 mathscreen(subjectCards, NavController)
             }
-           composable(Screen.Beranda.route) {
-               BerandaScreen(navController )
-           }
+            composable(Screen.Beranda.route) {
+                BerandaScreen(navController)
+            }
+            composable(Screen.Kalendar.route) {
+                KalenderScreen()
+            }
+            composable(Screen.PapanPeringkat.route) {
+                PapanPeringkatScreen(navController)
+            }
+            composable(Screen.Materi.route) {
+                MateriScreen()
+            }
+            composable("tugasanda") {
+                TugasAndaPage(navController = navController)
+            }
             composable(Screen.Akademik.route) {
                 val subjectCards = listOf(desainGrafisCard, matematikaCard)
-                AkademikScreen(subjectCards = subjectCards)
+                AkademikScreen(subjectCards = subjectCards, navController = navController)
+            }
+            composable(Screen.KelasDesain.route) {
+                KelasDesainScreen()
             }
             composable(Screen.SemuaKelas.route) {
                 SemuaKelasScreen(navController)
             }
-
             composable(Screen.Tugas.route) {
                 TugasScreen(navController)
             }
@@ -130,20 +178,22 @@ fun EdugoApp(
                 ForumContent()
             }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(navController)
             }
-            composable("ujian") {
+            composable(Screen.Ujian.route) {
                 UjianPage(navController)
             }
-            composable("soal") {
+            composable(Screen.Soal.route) {
                 SoalPage(navController)
             }
-
+            composable("editprofile") {
+                EditProfileScreen(navController = navController)
+            }
+            composable("riwayattugas") {
+                RiwayatTugasScreen(navController = navController)
+            }
         }
-
-
     }
-
 }
 
 
@@ -188,7 +238,7 @@ fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(
                         onClick = {
-                            navController.navigate("kalenderpage")
+                            navController.navigate(Screen.Kalendar.route)
                         },
                         modifier = Modifier.padding(end = 10.dp)
                     ) {
@@ -203,7 +253,7 @@ fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
                 }
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Color(0xFF0066769),
+                containerColor = Color(0xFF006769),
                 navigationIconContentColor = Color.White,
                 titleContentColor = Color.White
             ),
@@ -216,37 +266,6 @@ fun BerandaTopBar(currentRoute: String?, navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AkademikTopBar(currentRoute: String?) {
-    if(currentRoute == Screen.Akademik.route) {
-      TopAppBar(
-          title = {
-              Box(
-                  modifier = Modifier.fillMaxSize(),
-                  contentAlignment = Alignment.Center
-              ) {
-                  Text(
-                      text = "Materi Dan Kelas",
-                      style = TextStyle (
-                          fontSize = 20.sp,
-                          fontWeight = FontWeight.Bold,
-                          color = Color.White
-                      )
-                  )
-              }
-          },
-          colors = TopAppBarDefaults.smallTopAppBarColors(
-              containerColor = Color(0xFF006769),
-              titleContentColor = Color.White
-          ),
-          modifier = Modifier
-              .fillMaxWidth()
-              .height(85.dp)
-      )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun AppTopBar(
     title: String,
     showBackButton: Boolean = false,
@@ -254,25 +273,38 @@ fun AppTopBar(
 ) {
     TopAppBar(
         title = {
-            Box(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                if (showBackButton) {
+                    IconButton(onClick = { onBackClick?.invoke() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "Back",
+                            tint = Color.White,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                }
                 Text(
                     text = title,
                     color = Color.White,
-                    style = TextStyle(fontSize = 20.sp)
+                    style = TextStyle(fontSize = 20.sp),
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center
                 )
-            }
-        },
-        navigationIcon = {
-            if (showBackButton) {
-                IconButton(onClick = { onBackClick?.invoke() }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "Back",
-                        tint = Color.White
-                    )
+
+                if (showBackButton) {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.iconcalender),
+                            contentDescription = "Calendar Icon",
+                            tint = Color.Transparent,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
                 }
             }
         },
@@ -282,120 +314,92 @@ fun AppTopBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SemuaKelasTopBar(currentRoute: String?) {
-    if(currentRoute == Screen.SemuaKelas.route) {
-        TopAppBar(
-            title = {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Materi Dan Kelas",
-                        style = TextStyle (
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Color(0xFF006769),
-                titleContentColor = Color.White
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(85.dp)
-        )
-    }
-}
-
 
 @Composable
 private fun BottomNavBar(
     navController: NavHostController
 ) {
-    Surface(
+    Box(
         modifier = Modifier
-            .padding(horizontal = 13.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .shadow(elevation = 8.dp)
-            .height(90.dp),
-        shape = RoundedCornerShape(16.dp),
-        color = Color(0xFF95CFB9)
+            .background(Color.Transparent)
     ) {
-        NavigationBar (
-            containerColor = Color.Transparent,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        ){
-            val navBackStackEntry = navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry.value?.destination?.route
+        Surface(
+            modifier = Modifier
+                .padding(horizontal = 13.dp, vertical = 8.dp)
+                .fillMaxWidth()
+                .height(90.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = Color(0xFF95CFB9),
+            shadowElevation = 8.dp
+        ) {
+            NavigationBar(
+                containerColor = Color.Transparent,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            ) {
+                val navBackStackEntry = navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry.value?.destination?.route
 
-            val navigationItem = listOf(
-                NavigationItem (
-                    title = "Beranda",
-                    icon = R.drawable.iconberanda,
-                    screen = Screen.Beranda
-                ),
-                NavigationItem (
-                    title = "Akademik",
-                    icon = R.drawable.iconakademik,
-                    screen = Screen.Akademik
-                ),
-                NavigationItem (
-                    title = "Tugas",
-                    icon = R.drawable.icontugas,
-                    screen = Screen.Tugas
-                ),
-                NavigationItem (
-                    title = "Forum",
-                    icon = R.drawable.iconforum,
-                    screen = Screen.Forum
-                ),
-                NavigationItem (
-                    title = "Profile",
-                    icon = R.drawable.iconprofile,
-                    screen = Screen.Profile
+                val navigationItem = listOf(
+                    NavigationItem(
+                        title = "Beranda",
+                        icon = R.drawable.iconberanda,
+                        screen = Screen.Beranda
+                    ),
+                    NavigationItem(
+                        title = "Akademik",
+                        icon = R.drawable.iconakademik,
+                        screen = Screen.Akademik
+                    ),
+                    NavigationItem(
+                        title = "Tugas",
+                        icon = R.drawable.icontugas,
+                        screen = Screen.Tugas
+                    ),
+                    NavigationItem(
+                        title = "Forum",
+                        icon = R.drawable.iconforum,
+                        screen = Screen.Forum
+                    ),
+                    NavigationItem(
+                        title = "Profile",
+                        icon = R.drawable.iconprofile,
+                        screen = Screen.Profile
+                    )
                 )
 
-            )
-
-            navigationItem.forEach{item ->
-                NavigationBarItem(
-                    selected = currentRoute == item.screen.route,
-                    onClick = {
-                        navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState =true
+                navigationItem.forEach { item ->
+                    NavigationBarItem(
+                        selected = currentRoute == item.screen.route,
+                        onClick = {
+                            navController.navigate(item.screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                restoreState = true
+                                launchSingleTop = true
                             }
-                            restoreState = true
-                            launchSingleTop = true
+                        },
+                        icon = {
+                            Image(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title,
+                                modifier = Modifier.size(23.dp)
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = item.title,
+                                color = Color.White,
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
                         }
-                    },
-                    icon = {
-                        Image(
-                            painter = painterResource(id = item.icon),
-                            contentDescription = item.title,
-                            modifier = Modifier.size(23.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = item.title,
-                            color = Color.White,
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                )
+                    )
+                }
             }
-
         }
-
     }
 }
 

@@ -2,7 +2,6 @@ package com.example.edugo_app.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,48 +26,63 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.edugo_app.R
 import com.example.edugo_app.data.CardUser
 import com.example.edugo_app.data.Lesson
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.edugo_app.navigation.Screen
 
 @Composable
 fun BerandaScreen(navController: NavHostController) {
-    Surface() {
-        Column {
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry.value?.destination?.route
+    Surface {
+        Column (
+            modifier = Modifier.background(Color.White)
+        ){
             BerandaBar(navController)
-            val user = CardUser(
-                studentName = "Ferdian",
-                studentId = "2111340",
-                studentClass = "10A",
-                lightningCount = 5,
-                fireCount = 3
-            )
-            BerandaCardUser(cardUser = user)
-            ProgressBelajarBox()
+            LazyColumn(
+//            modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    val user = CardUser(
+                        studentName = "Ferdian",
+                        studentId = "2111340",
+                        studentClass = "10A",
+                        lightningCount = 5,
+                        fireCount = 3
+                    )
+                    BerandaCardUser(cardUser = user, navController)
+                }
+                item {
+                    ProgressBelajarBox()
+                }
+                item {
+                    ImageBanner()
+                }
+            }
         }
     }
+
 }
 
 
@@ -90,7 +104,7 @@ fun BerandaBar(
     Column (
         modifier = Modifier
             .fillMaxWidth()
-            .height(260.dp)
+            .height(280.dp)
             .background(Color(0xFF006769))
     ){
         Text(
@@ -107,7 +121,6 @@ fun BerandaBar(
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         ) {
-
             items(Lessons) { lesson ->
                 LessonItem(
                     title = lesson.title,
@@ -150,10 +163,11 @@ fun LessonItem(title: String, icon: Painter, onClick: () -> Unit) {
 }
 
 @Composable
-fun BerandaCardUser(cardUser: CardUser){
+fun BerandaCardUser(cardUser: CardUser, navController: NavHostController){
     Card (
         modifier = Modifier
             .padding(14.dp)
+            .background(Color.White)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF006769)
@@ -180,7 +194,7 @@ fun BerandaCardUser(cardUser: CardUser){
                     )
                 )
                 TextButton(
-                    onClick = { }
+                    onClick = { navController.navigate(Screen.PapanPeringkat.route) }
                 ) {
                     Text(
                         text = "Detail >",
@@ -294,6 +308,7 @@ fun ProgressBelajarBox() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(
@@ -309,16 +324,15 @@ fun ProgressBelajarBox() {
             ) {
                 Text(
                     text = "Progres Belajar",
-                    style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.Black)
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    LegendItem(color = Color(0xFF8FD3C1), label = "Minggu ini")
-                    LegendItem(color = Color(0xFF567D6C), label = "Minggu Kemarin")
+                    LegendItem(color = Color(0xFF95CFB9), label = "Minggu ini")
+                    LegendItem(color = Color(0xFF245859), label = "Minggu Kemarin")
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Progress bars
             ProgressBarRow(label = "penyelesaian kelas", progressThisWeek = 0.7f, progressLastWeek = 0.5f)
             Spacer(modifier = Modifier.height(8.dp))
             ProgressBarRow(label = "penyelesaian Tugas", progressThisWeek = 0.9f, progressLastWeek = 0.4f)
@@ -326,7 +340,7 @@ fun ProgressBelajarBox() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "1 November - 28 November 2024",
-                style = TextStyle(fontSize = 12.sp, color = Color.Gray)
+                style = TextStyle(fontSize = 12.sp, color = Color.Black)
             )
         }
     }
@@ -334,7 +348,9 @@ fun ProgressBelajarBox() {
 
 @Composable
 fun LegendItem(color: Color, label: String) {
-    Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Canvas(
             modifier = Modifier.size(12.dp)
         ) {
@@ -362,24 +378,27 @@ fun ProgressBarRow(label: String, progressThisWeek: Float, progressLastWeek: Flo
             Canvas(
                 modifier = Modifier.matchParentSize()
             ) {
-                // Background bar
+                val barHeight = 20.dp.toPx()
+                val cornerRadius = CornerRadius(4.dp.toPx())
+
+
                 drawRoundRect(
                     color = Color.LightGray.copy(alpha = 0.5f),
-                    size = Size(size.width, 20.dp.toPx()),
-                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx())
+                    size = Size(size.width, barHeight),
+                    cornerRadius = cornerRadius
                 )
-                // Last week's progress
+
                 drawRoundRect(
-                    color = Color(0xFF567D6C),
-                    size = Size(size.width * progressLastWeek, 20.dp.toPx()),
-                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx())
+                    color = Color(0xFF006769),
+                    size = Size(size.width * progressLastWeek, barHeight),
+                    cornerRadius = cornerRadius
                 )
-                // This week's progress
+
                 drawRoundRect(
                     color = Color(0xFF8FD3C1),
-                    size = Size(size.width * progressThisWeek, 20.dp.toPx()),
-                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(10.dp.toPx()),
-                    style = Stroke(width = 3.dp.toPx())
+                    size = Size(size.width * progressThisWeek, barHeight),
+                    cornerRadius = cornerRadius,
+//                    style = Stroke(width = 4.dp.toPx())
                 )
             }
         }
@@ -387,9 +406,36 @@ fun ProgressBarRow(label: String, progressThisWeek: Float, progressLastWeek: Flo
 }
 
 
-@Preview(showBackground = true)
 @Composable
-fun EdugoAppPreview() {
-    BerandaScreen(navController = rememberNavController())
+fun ImageBanner() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = painterResource(id = R.drawable.imagebanner),
+                contentDescription = "Image desain grafis",
+                modifier = Modifier
+                    .height(180.dp)
+                    .width(440.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun EdugoAppPreview() {
+//    BerandaScreen(navController = rememberNavController())
+//}
 

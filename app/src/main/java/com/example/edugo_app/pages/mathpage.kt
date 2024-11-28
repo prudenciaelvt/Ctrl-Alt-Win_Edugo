@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -65,10 +66,8 @@ fun MathContent(subjectCards: List<lessoncard>) {
                     color = Color.Black
                 )
             )
-            TextButton(onClick = { /* TODO: Add detail action */ }) {
-                Text(text = "Semuanya >", color = Color.Black, fontSize = 14.sp)
-            }
         }
+        Spacer(modifier = Modifier.height(16.dp))
         MathCardsRow(subjectCards = subjectCards)
     }
 }
@@ -83,6 +82,7 @@ fun MathCardsRow(subjectCards: List<lessoncard>) {
                 MathCardItem(card)
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 
 }
@@ -129,8 +129,18 @@ fun MathCardItem(card: lessoncard) {
                 Text(text = card.jumlahtugas, style = TextStyle(fontSize = 12.sp))
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = card.persentase, style = TextStyle(fontSize = 12.sp))
-            Text(text = card.score, style = TextStyle(fontSize = 12.sp))
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(text = card.persentase, style = TextStyle(fontSize = 12.sp))
+                Text(text = card.score, style = TextStyle(fontSize = 12.sp))
+            }
+            Image(
+                painter = painterResource(id = R.drawable.iconprogress),
+                contentDescription = "Progress",
+            )
+
         }
     }
 }
