@@ -88,6 +88,10 @@ fun EdugoApp(
                 Screen.Beranda.route -> BerandaTopBar(currentRoute, navController)
                 Screen.Splash.route -> {}
                 Screen.Daftar.route -> {}
+                Screen.Ujian.route -> {}
+                "editprofile" -> {}
+                "riwayattugas" -> {}
+                "tugasanda" -> {}
                 else -> {
                     AppTopBar(
                         title = when (currentRoute) {
