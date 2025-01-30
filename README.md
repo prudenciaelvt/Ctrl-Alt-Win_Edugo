@@ -20,7 +20,7 @@ Untuk menjalankan aplikasi Edugo di Android, ikuti langkah-langkah berikut:
 
 ### Persyaratan
 
-- **Android Studio Koala Drop Features**.
+- **Android Studio Koala Feature Drop**.
 - **JDK 22.0.1**.
 - **SDK Android**.
 
