@@ -43,3 +43,7 @@ Frontend aplikasi ini dibangun dengan **Jetpack Compose**, library UI deklaratif
 - **Card**: Untuk menampilkan item dalam bentuk kartu.
 - **Navigation**: Untuk mengelola navigasi antar halaman di aplikasi menggunakan **Compose Navigation**.
 
+## 🪨Pengembang Frontend
+
+- **Prudencia Belva Cynara Trana Putri**.
+- **Sulfia**.
