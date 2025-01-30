@@ -22,25 +22,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.edugo_app.R
 import com.example.edugo_app.AppTopBar
+import com.example.edugo_app.R
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SoalPage(navController: NavHostController) {
+fun UjianPage(
+    navController: NavHostController
+) {
     Scaffold(
         topBar = {
             AppTopBar(
-                title = "Soal",
+                title = "Ujian",
                 showBackButton = true,
                 onBackClick = { navController.popBackStack() }
             )
         },
-        content = { paddingValues ->
+        content = {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+
             ) {
                 Box(
                     modifier = Modifier
@@ -51,113 +54,149 @@ fun SoalPage(navController: NavHostController) {
                             shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
                         )
                 )
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(bottom = 64.dp)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.img_ujian),
+                        contentDescription = "Gambar Ujian",
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(top = 40.dp)
+                            .size(350.dp)
+                            .padding(16.dp),
+                        contentScale = ContentScale.Fit
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .offset(y = (-24).dp)
+                            .padding(horizontal = 16.dp)
                     ) {
                         Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(
-                                text = "01-10",
-                                style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            InfoButton(
+                                text = "10 Pertanyaan",
+                                backgroundColor = Color(0xFFEAF6F6),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .shadow(
+                                        elevation = 8.dp,
+                                        shape = RoundedCornerShape(8.dp),
+                                        clip = false
+                                    )
                             )
-                            Text(
-                                text = "09:00",
-                                style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFFFFFF))
+                            InfoButton(
+                                text = "+50 Point",
+                                backgroundColor = Color(0xFFEAF6F6),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .shadow(
+                                        elevation = 8.dp,
+                                        shape = RoundedCornerShape(8.dp),
+                                        clip = false
+                                    )
                             )
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        LinearProgressIndicator(
-                            progress = 0.6f,
-                            color = Color(0xFF95CFB9),
-                            trackColor = Color(0xFFE0E0E0),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(6.dp)
-                        )
                     }
-                    Spacer(modifier = Modifier.height(90.dp))
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                clip = false
-                            )
                             .background(Color.White, shape = RoundedCornerShape(16.dp))
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = "1. Jika sebuah segitiga memiliki panjang alas 8 cm dan tinggi 6 cm, maka luas segitiga tersebut adalah...",
-                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium),
-                            modifier = Modifier.padding(bottom = 16.dp)
+                            text = "Deskripsi",
+                            style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         )
-
-                        listOf("A) 12 cm²", "B) 24 cm²", "C) 48 cm²", "D) 36 cm²").forEachIndexed { index, option ->
-                            OutlinedButton(
-                                onClick = { /* Handle answer selection */ },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
-                            ) {
-                                Text(
-                                    text = option,
-                                    style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Normal)
-                                )
-                            }
-                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Ujian ini bertujuan untuk mengukur pemahaman siswa terhadap konsep-konsepdasar matematika serta kemampuan dalam menerapkannya pada berbagai masalah.",
+                            style = TextStyle(fontSize = 14.sp),
+                            color = Color.Gray
+                        )
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.Center
+                            .padding(horizontal = 16.dp)
                     ) {
-                        Button(
-                            onClick = { navController.popBackStack() },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF80B3B4)),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier
-                                .shadow(
-                                    elevation = 0.5.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    clip = false
-                                )
-                        ) {
-                            Text("Kembali", color = Color.White)
-                        }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Button(
-                            onClick = { navController.navigate("ujianselesai") },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF006769)),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier
-                                .shadow(
-                                    elevation = 0.5.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    clip = false,
-                                )
-                        ) {
-                            Text("Lanjut", color = Color.White)
+                        Image(
+                            painter = painterResource(id = R.drawable.image2),
+                            contentDescription = "Foto Guru",
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column {
+                            Text(
+                                text = "Bu Aryani",
+                                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            )
+                            Text(
+                                text = "Guru Matematika",
+                                style = TextStyle(fontSize = 14.sp),
+                                color = Color.Gray
+                            )
                         }
                     }
-
                 }
+
+                Button(
+                    onClick = { navController.navigate("soal") },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF006769)),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                        .height(48.dp)
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 8.dp,
+                            shape = RoundedCornerShape(8.dp),
+                            clip = false
+                        )
+                ) {
+                    Text(
+                        text = "Mulai",
+                        style = TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    )
+                }
+
             }
         }
     )
+}
+
+
+@Composable
+fun InfoButton(text: String, backgroundColor: Color, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .background(backgroundColor, shape = RoundedCornerShape(16.dp))
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+        )
+    }
 }
