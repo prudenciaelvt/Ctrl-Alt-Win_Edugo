@@ -1,4 +1,4 @@
-# Edugo: Collaborative Learning Platform
+# 🧑‍🏫Edugo: Collaborative Learning Platform
 
 **Edugo** adalah platform pembelajaran kolaboratif yang bertujuan untuk memberikan pengalaman belajar yang lebih interaktif, menarik, dan memudahkan siswa dan pengajar berkolaborasi dalam berbagai topik pembelajaran. Dengan tampilan modern dan interaktif, Edugo memfasilitasi peserta didik untuk saling berbagi pengetahuan dan belajar bersama.
 
@@ -10,11 +10,11 @@
 - **Tugas dan Ujian**: Pengguna dapat mengerjakan tugas dan ujian untuk meningkatkan keterampilan.
 - **Profil Pengguna**: Setiap pengguna dapat memantau perkembangan belajar mereka dengan fitur profil yang dapat disesuaikan.
 
-## Teknologi yang Digunakan
+## 🪨Teknologi yang Digunakan
 
 - **Frontend**: Menggunakan **Kotlin** dan **Jetpack Compose** untuk membangun antarmuka pengguna yang responsif dan modern.
 
-## Instalasi Frontend (Android)
+## 🪨Instalasi Frontend (Android)
 
 Untuk menjalankan aplikasi Edugo di Android, ikuti langkah-langkah berikut:
 
@@ -32,7 +32,7 @@ Untuk menjalankan aplikasi Edugo di Android, ikuti langkah-langkah berikut:
 - **app/src/main/java/com/example/edugo_app/pages/**: Setiap halaman atau layar aplikasi, seperti halaman forum, profil, dan tugas.
 - **app/src/main/java/com/example/edugo_app/screen/**: Mengatur navigasi ke setiap halaman.
 
-## Pengembangan Frontend
+## 🪨Pengembangan Frontend
 
 ### Jetpack Compose
 
